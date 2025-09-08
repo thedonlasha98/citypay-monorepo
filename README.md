@@ -1,17 +1,24 @@
 # CityPay Core Monorepo (Groovy Gradle, Java 21)
 
-Multi-project Gradle monorepo skeleton for crypto transactions core microservices using Groovy DSL Gradle files and Java 21.
+A multi-project Gradle skeleton for CityPay crypto transaction microservices. The build uses the Groovy DSL and targets Java 21.
 
-Structure:
-- libs/shared  : shared Java library used by services
-- services/balance : Spring Boot service that depends on libs/shared
+## Project Structure
+- `libs/shared` – shared Java library.
+- `services/balance` – Spring Boot service that depends on `libs/shared`.
 
-Group ID: io.citypay.core
-Java target: 21
-
-Quick run (from repository root):
-1. Install a JDK 21
-2. Run the balance service:
+## Getting Started
+1. Install JDK 21.
+2. Build and test the project:
+   ```
+   ./gradlew build
+   ```
+3. Run the balance service:
+   ```
    ./gradlew :services:balance:bootRun
+   ```
 
-Expand with more modules, CI, and Docker as needed.
+## Notes
+- Group ID: `io.citypay.core`
+- Java target: `21`
+- Extend with additional modules under `libs/` and `services/` as needed.
+
