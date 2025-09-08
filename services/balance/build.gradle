@@ -9,15 +9,7 @@ bootJar {
     archiveVersion = '0.0.1'
 }
 
-group = 'io.citypay.core.balance'
-version = '0.0.1'
 description = 'Balance Microservice'
-
-//dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation project(':libs:shared')
-//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//}
 
 dependencies {
     implementation project(':libs:shared')
@@ -37,12 +29,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
 }
 
 tasks.withType(Test) {

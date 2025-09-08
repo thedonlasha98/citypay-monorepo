@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface BalanceMapper {
 
-//    Balance toEntity(BalanceRO balanceRO);
+  //    Balance toEntity(BalanceRO balanceRO);
 
-    BalanceRO toDTO(Balance balance);
+  BalanceRO toDTO(Balance balance);
 }

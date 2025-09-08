@@ -1,4 +1,3 @@
 package io.citypay.core.shared.enums;
 
-public enum Asset {
-}
+public enum Asset {}

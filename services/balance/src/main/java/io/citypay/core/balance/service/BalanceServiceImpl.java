@@ -10,14 +10,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BalanceServiceImpl implements BalanceService {
 
-    private final BalanceMapper balanceMapper;
-    private final BalanceRepository balanceRepository;
+  private final BalanceMapper balanceMapper;
+  private final BalanceRepository balanceRepository;
 
-    @Override
-    public BalanceRO getBalance(String address) {
-        return balanceRepository.findByAddress(address)
-                .map(balanceMapper::toDTO)
-                .orElse(null);
-    }
-
+  @Override
+  public BalanceRO getBalance(String address) {
+    return balanceRepository.findByAddress(address).map(balanceMapper::toDTO).orElse(null);
+  }
 }

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/balance")
 public class BalanceController {
 
-    @RequestMapping()
-    public String getBalance() {
-        return "Hello World!";
-    }
+  @RequestMapping()
+  public String getBalance() {
+    return "Hello World!";
+  }
 }
