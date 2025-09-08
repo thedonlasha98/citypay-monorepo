@@ -5,3 +5,11 @@
 /.vscode
 /.DS_Store
 *.iml
+
+
+
+# Local configuration files (applies to all modules)
+**/application-local.yaml
+**/application-local.properties
+**/src/main/resources/application-local.*
+**/src/test/resources/application-local.*
