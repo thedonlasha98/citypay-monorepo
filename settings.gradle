@@ -1,0 +1,4 @@
+rootProject.name = 'citypay-core-monorepo-groovy'
+
+include 'libs:shared'
+include 'services:balance'
