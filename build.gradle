@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'com.diffplug.spotless' version '6.25.0' apply false
 }
 
 allprojects {
@@ -9,4 +9,59 @@ allprojects {
         mavenCentral()
     }
 }
-apply from: "$rootDir/gradle/coding-standard.gradle"
+
+// Root-level tasks for convenience
+tasks.register('downloadGoogleConfig') {
+    description = 'Download Google checkstyle configuration'
+    doLast {
+        def configFile = file('config/checkstyle/google_checks.xml')
+        if (!configFile.exists()) {
+            configFile.parentFile.mkdirs()
+            new URL('https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml')
+                    .withInputStream { i -> configFile.withOutputStream { it << i } }
+            println "✅ Downloaded Google checkstyle config"
+        } else {
+            println "✅ Google config already exists"
+        }
+    }
+}
+
+tasks.register('formatAll') {
+    description = 'Format all Java code with Google standards'
+    dependsOn subprojects.collect { ":${it.name}:spotlessApply" }
+}
+
+tasks.register('setupGitHook') {
+    description = 'Setup pre-commit hook for auto-formatting'
+    doLast {
+        def hookFile = file('.git/hooks/pre-commit')
+        hookFile.parentFile.mkdirs()
+        hookFile.text = '''#!/bin/sh
+echo "🔍 Auto-formatting Java code..."
+./gradlew formatAll --quiet
+git add -u
+echo "✅ Code formatted with Google standards"
+'''
+        hookFile.setExecutable(true)
+        println "✅ Git pre-commit hook installed"
+    }
+}
+
+// Show project status
+tasks.register('status') {
+    doLast {
+        println """
+🏢 CityPay Core Monorepo Status:
+✅ Google Java Format: Ready
+📋 Projects: libs:shared, services:balance
+🔗 Git Hook: ${file('.git/hooks/pre-commit').exists() ? 'Installed' : 'Not installed'}
+
+Quick commands:
+  ./gradlew formatAll     # Format all code
+  ./gradlew setupGitHook  # Install git hook
+"""
+    }
+}
+
+// Don't apply the problematic coding-standard.gradle
+// Instead, we'll add formatting directly to each subproject

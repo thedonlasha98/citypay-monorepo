@@ -1,12 +1,13 @@
 package io.citypay.core.balance.domain;
 
-import io.citypay.core.shared.enums.Asset;
-import jakarta.persistence.*;
-import lombok.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.math.BigDecimal;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import io.citypay.core.shared.enums.Asset;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
@@ -16,11 +17,14 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 public class Balance {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    private String address;
-    @Enumerated(value = EnumType.STRING)
-    private Asset asset;
-    private BigDecimal balance;
+  @Id
+  @GeneratedValue(strategy = IDENTITY)
+  private Long id;
+
+  private String address;
+
+  @Enumerated(value = EnumType.STRING)
+  private Asset asset;
+
+  private BigDecimal balance;
 }

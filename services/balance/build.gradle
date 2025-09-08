@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '3.5.5'
     id 'io.spring.dependency-management' version '1.1.2'
     id 'java'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 bootJar {
@@ -13,11 +14,18 @@ group = 'io.citypay.core.balance'
 version = '0.0.1'
 description = 'Balance Microservice'
 
-//dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation project(':libs:shared')
-//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//}
+// Google Java Format configuration
+spotless {
+    java {
+        googleJavaFormat('1.22.0').style('GOOGLE')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+
+        // Import order for your project
+        importOrder('java', 'javax', 'org', 'com', 'io.citypay', '')
+    }
+}
 
 dependencies {
     implementation project(':libs:shared')
@@ -27,8 +35,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.12'
-//    implementation 'org.flywaydb:flyway-core'
-//    implementation 'org.flywaydb:flyway-database-postgresql'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
@@ -48,3 +54,6 @@ java {
 tasks.withType(Test) {
     useJUnitPlatform()
 }
+
+// Auto-format before compile
+compileJava.dependsOn spotlessApply

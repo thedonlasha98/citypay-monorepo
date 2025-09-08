@@ -1,11 +1,15 @@
+// Fixed version - proper plugin application
 subprojects {
+    // Apply plugins first
+    apply plugin: 'checkstyle'
+
+    // Only apply Spotless if Java plugin is present
     plugins.withType(JavaPlugin) {
-        apply plugin: 'checkstyle'
         apply plugin: 'com.diffplug.spotless'
 
         checkstyle {
             toolVersion = '10.12.5'
-            configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+            configFile = rootProject.file('config/checkstyle/google_checks.xml')
         }
 
         tasks.withType(Checkstyle).configureEach {
@@ -17,11 +21,18 @@ subprojects {
 
         spotless {
             java {
-                googleJavaFormat('1.22.0')
+                googleJavaFormat('1.22.0').style('GOOGLE')
                 removeUnusedImports()
                 trimTrailingWhitespace()
                 endWithNewline()
             }
         }
+
+        // Auto-format before compile
+        compileJava.dependsOn spotlessApply
+
+        // Download Google config before checkstyle runs
+        checkstyleMain.dependsOn ':downloadGoogleConfig'
+        checkstyleTest.dependsOn ':downloadGoogleConfig'
     }
 }

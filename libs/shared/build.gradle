@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 java {
@@ -9,6 +10,19 @@ java {
     withSourcesJar()
 }
 
+// Google Java Format configuration
+spotless {
+    java {
+        googleJavaFormat('1.22.0').style('GOOGLE')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+
+        // Import order for your project
+        importOrder('java', 'javax', 'org', 'com', 'io.citypay', '')
+    }
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
@@ -16,3 +30,6 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+// Auto-format before compile
+compileJava.dependsOn spotlessApply
