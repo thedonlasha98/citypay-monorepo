@@ -4,3 +4,4 @@ include 'libs:shared'
 include 'services:balance'
 
 include 'libs:multitenancy'
+include 'services:tenant'
