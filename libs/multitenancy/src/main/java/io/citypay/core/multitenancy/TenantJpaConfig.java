@@ -11,7 +11,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = {"io.citypay.core"},
+    basePackages = {"io.citypay.core.multitenancy"},
     entityManagerFactoryRef = "tenantEmf",
     transactionManagerRef = "tenantTx")
 public class TenantJpaConfig {
@@ -33,7 +33,9 @@ public class TenantJpaConfig {
     @Override
     protected DataSource determineTargetDataSource() {
       String tenantId = TenantContext.getTenantId();
-      if (tenantId == null) return super.determineTargetDataSource();
+      if (tenantId == null) {
+          return super.determineTargetDataSource();
+      }
       return (DataSource) manager.getOrCreate(tenantId);
     }
   }

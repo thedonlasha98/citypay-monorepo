@@ -1,0 +1,8 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tenantdb
+    username: tenant_app
+    password: tenant_app
+    driver-class-name: org.postgresql.Driver

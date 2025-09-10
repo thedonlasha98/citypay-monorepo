@@ -1,47 +1,91 @@
 version: "3.9"
 
 services:
-  db:
+#  balance_db:
+#    image: postgres:16
+#    container_name: balance-postgres
+#    environment:
+#      POSTGRES_DB: balancedb
+#      POSTGRES_USER: balance_app
+#      POSTGRES_PASSWORD: balance_app
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - db_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U demo -d demo"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#
+#  tenant_db:
+#    image: postgres:16
+#    container_name: tenant-postgres
+#    environment:
+#      POSTGRES_DB: tenantdb
+#      POSTGRES_USER: tenant_app
+#      POSTGRES_PASSWORD: tenant_app
+#    ports:
+#      - "5433:5432"
+#    volumes:
+#      - tenant_db_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U tenant -d tenant" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+  postgres:
     image: postgres:16
-    container_name: postgres
+    container_name: shared-postgres
     environment:
-      POSTGRES_DB: core
-      POSTGRES_USER: core
-      POSTGRES_PASSWORD: core
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: admin_password
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U demo -d demo"]
+      test: [ "CMD-SHELL", "pg_isready -U admin_user" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  app:
+  balance-app:
     build:
       context: .
       dockerfile: services/balance/Dockerfile
     container_name: balance-app
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
     environment:
       # Spring Boot datasource via environment variables
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/core
-      SPRING_DATASOURCE_USERNAME: core
-      SPRING_DATASOURCE_PASSWORD: core
-
-      # Optional: tune Hibernate and SQL logging here if your app uses them
-      # SPRING_JPA_HIBERNATE_DDL_AUTO: validate
-      # SPRING_JPA_SHOW_SQL: "true"
-
-      # Optional: set active profile
-      # SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/balancedb
+      SPRING_DATASOURCE_USERNAME: balance_app
+      SPRING_DATASOURCE_PASSWORD: balance_app
     ports:
-      - "8080:8080"
+      - "8082:8080"
     # If the app writes logs to console, this is fine; otherwise mount volumes as needed
     restart: unless-stopped
+
+  tenant-app:
+    build:
+      context: .
+      dockerfile: services/tenant/Dockerfile
+    container_name: tenant-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Spring Boot datasource via environment variables
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tenantdb
+      SPRING_DATASOURCE_USERNAME: tenant_app
+      SPRING_DATASOURCE_PASSWORD: tenant_app
+    ports:
+      - "8081:8080"
+    # If the app writes logs to console, this is fine; otherwise mount volumes as needed
+    restart: unless-stopped
+
 
 volumes:
   db_data:

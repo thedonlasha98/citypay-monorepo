@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class TenantDataSourceManager {
-  private final TenantRepository repo;
+  private final TenantService tenantService;
   private final TenantFlywayService flyway;
   private final Map<String, HikariDataSource> cache = new ConcurrentHashMap<>();
 
-  public TenantDataSourceManager(TenantRepository repo, TenantFlywayService flyway) {
-    this.repo = repo;
+  public TenantDataSourceManager(TenantService tenantService, TenantFlywayService flyway) {
+    this.tenantService = tenantService;
     this.flyway = flyway;
   }
 
@@ -23,15 +23,15 @@ public class TenantDataSourceManager {
     return cache.computeIfAbsent(
         tenantId,
         id -> {
-          Tenant t =
-              repo.findById(id)
-                  .orElseThrow(() -> new IllegalArgumentException("Unknown tenant: " + id));
-          if (!t.isActive()) throw new IllegalStateException("Tenant inactive: " + id);
+          Tenant t = tenantService.getTenant(id);
+          if (!t.active()) {
+              throw new IllegalStateException("Tenant inactive: " + id);
+          }
 
           HikariDataSource ds = new HikariDataSource();
-          ds.setJdbcUrl(t.getJdbcUrl());
-          ds.setUsername(t.getUsername());
-          ds.setPassword(t.getPassword());
+          ds.setJdbcUrl(t.jdbcUrl());
+          ds.setUsername(t.username());
+          ds.setPassword(t.password());
           ds.setPoolName("tenant-" + id);
           ds.setMaximumPoolSize(10);
           log.info("Created DataSource for tenant {}", id);

@@ -1,4 +1,4 @@
-package io.citypay.core.multitenancy;
+package io.citypay.core.tenant;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
