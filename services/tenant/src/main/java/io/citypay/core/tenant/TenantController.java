@@ -13,7 +13,7 @@ public class TenantController {
 
   @GetMapping("/{tenantId}")
   public Tenant get(@PathVariable String tenantId) {
-      return provision.getTenant(tenantId);
+    return provision.getTenant(tenantId);
   }
 
   @PostMapping("/{tenantId}")

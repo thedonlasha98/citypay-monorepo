@@ -25,7 +25,7 @@ public class TenantDataSourceManager {
         id -> {
           Tenant t = tenantService.getTenant(id);
           if (!t.active()) {
-              throw new IllegalStateException("Tenant inactive: " + id);
+            throw new IllegalStateException("Tenant inactive: " + id);
           }
 
           HikariDataSource ds = new HikariDataSource();

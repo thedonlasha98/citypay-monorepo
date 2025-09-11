@@ -2,10 +2,10 @@ package io.citypay.core.tenant;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@SpringBootApplication
-@ComponentScan(basePackages = "io.citypay.core")
+@SpringBootApplication(scanBasePackages = "io.citypay.core")
+@EnableConfigurationProperties(TenantManagementProperties.class)
 public class TenantApplication {
 
   public static void main(String[] args) {

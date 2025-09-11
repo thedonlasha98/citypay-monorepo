@@ -34,7 +34,7 @@ public class TenantJpaConfig {
     protected DataSource determineTargetDataSource() {
       String tenantId = TenantContext.getTenantId();
       if (tenantId == null) {
-          return super.determineTargetDataSource();
+        return super.determineTargetDataSource();
       }
       return (DataSource) manager.getOrCreate(tenantId);
     }

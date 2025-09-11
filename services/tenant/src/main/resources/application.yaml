@@ -1,8 +1,29 @@
+# Server
 server:
   port: 8081
 spring:
+  # Spring Boot default datasource (for tenant metadata)
   datasource:
-    url: jdbc:postgresql://localhost:5432/tenantdb
-    username: tenant_app
-    password: tenant_app
+    url: jdbc:postgresql://localhost:5432/tenant_registry
+    username: tenant_admin
+    password: tenant_admin_pass
     driver-class-name: org.postgresql.Driver
+  
+  # Flyway for main database
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+# Tenant management specific properties
+tenant-management:
+  admin-jdbc-url: jdbc:postgresql://localhost:5432/postgres
+  admin-username: postgres
+  admin-password: postgres_pass
+  tenant-url-template: jdbc:postgresql://localhost:5432/tenant_{tenantId}
+  default-tenant-username: tenant_user
+  default-tenant-password: tenant_pass
+
+# Multitenancy integration (needed since this service calls multitenancy lib)
+multitenancy:
+  tenant-service-url: http://localhost:8080
+  tenant-flyway-locations: classpath:db/migration

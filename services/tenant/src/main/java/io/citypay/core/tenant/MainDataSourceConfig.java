@@ -1,28 +1,28 @@
-//package io.citypay.core.tenant;
+// package io.citypay.core.tenant;
 //
-//import com.zaxxer.hikari.HikariDataSource;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.boot.context.properties.EnableConfigurationProperties;
-//import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.context.annotation.Primary;
-//import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-//import org.springframework.orm.jpa.JpaTransactionManager;
-//import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-//import org.springframework.transaction.PlatformTransactionManager;
+// import com.zaxxer.hikari.HikariDataSource;
+// import lombok.RequiredArgsConstructor;
+// import org.springframework.boot.context.properties.EnableConfigurationProperties;
+// import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.context.annotation.Primary;
+// import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+// import org.springframework.orm.jpa.JpaTransactionManager;
+// import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+// import org.springframework.transaction.PlatformTransactionManager;
 //
-//import javax.sql.DataSource;
+// import javax.sql.DataSource;
 //
-//@Configuration
-//@EnableConfigurationProperties(TenantManagementProperties.class)
-//@EnableJpaRepositories(
+// @Configuration
+// @EnableConfigurationProperties(TenantManagementProperties.class)
+// @EnableJpaRepositories(
 //    basePackages = "io.citypay.core.tenant",
 //    entityManagerFactoryRef = "mainEntityManagerFactory",
 //    transactionManagerRef = "mainTx"
-//)
-//@RequiredArgsConstructor
-//public class MainDataSourceConfig {
+// )
+// @RequiredArgsConstructor
+// public class MainDataSourceConfig {
 //
 //    private final TenantManagementProperties properties;
 //
@@ -56,4 +56,4 @@
 //            LocalContainerEntityManagerFactoryBean mainEntityManagerFactory) {
 //        return new JpaTransactionManager(mainEntityManagerFactory.getObject());
 //    }
-//}
+// }
